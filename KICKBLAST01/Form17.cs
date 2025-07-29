@@ -118,10 +118,17 @@ namespace KICKBLAST01
 
         private void btnApply_Click_1(object sender, EventArgs e)
         {
-            
+            MessageBox.Show("Button clicked!");  // For debugging only
+
             try
             {
-                con.Open();
+                // Check if txtWeightc contains "beginner" (case insensitive)
+                if (string.Equals(txtWeightc.Text.Trim(), "beginner", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Beginners can't apply.");
+                    return;
+                }
+                    con.Open();
                 SqlCommand cmd = new SqlCommand(@"INSERT INTO CompetitionApplications_Backup 
                     (CompetitionID, AthleteID, TrainingPlanID, CurrentWeightCategory, AllowPlan)
                     VALUES (@CompetitionID, @AthleteID, @TrainingPlanID, @WeightCategory, @AllowPlan)", con);
@@ -136,9 +143,20 @@ namespace KICKBLAST01
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Your application has been processed.");
             }
+            catch (SqlException ex)
+            {
+                if (ex.Message.Contains("FOREIGN KEY"))
+                {
+                    MessageBox.Show("Please enter your valid ID.");
+                }
+                else
+                {
+                    MessageBox.Show("Database error: " + ex.Message);
+                }
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error saving: " + ex.Message);
+                MessageBox.Show("Unexpected error: " + ex.Message);
             }
             finally
             {

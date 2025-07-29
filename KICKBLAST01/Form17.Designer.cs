@@ -310,7 +310,7 @@
             this.cmbAllowplan.FormattingEnabled = true;
             this.cmbAllowplan.Items.AddRange(new object[] {
             "Yes",
-            "No"});
+            "No(Begginer)"});
             this.cmbAllowplan.Location = new System.Drawing.Point(654, 456);
             this.cmbAllowplan.Name = "cmbAllowplan";
             this.cmbAllowplan.Size = new System.Drawing.Size(142, 24);
@@ -406,7 +406,7 @@
             // 
             this.cmbPlanID.FormattingEnabled = true;
             this.cmbPlanID.Items.AddRange(new object[] {
-            "1",
+            "",
             "2",
             "3"});
             this.cmbPlanID.Location = new System.Drawing.Point(654, 381);
