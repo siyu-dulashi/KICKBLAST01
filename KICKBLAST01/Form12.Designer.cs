@@ -35,11 +35,9 @@
             this.btnRview = new System.Windows.Forms.Button();
             this.btnReg = new System.Windows.Forms.Button();
             this.lblAID = new System.Windows.Forms.Label();
-            this.cmbAID = new System.Windows.Forms.ComboBox();
             this.lblFeeNo = new System.Windows.Forms.Label();
             this.cmbMonthID = new System.Windows.Forms.ComboBox();
             this.lblTraning = new System.Windows.Forms.Label();
-            this.lblPlanId = new System.Windows.Forms.Label();
             this.lblTraningP = new System.Windows.Forms.Label();
             this.lblWeekF = new System.Windows.Forms.Label();
             this.lblAttendance = new System.Windows.Forms.Label();
@@ -55,7 +53,6 @@
             this.lblAttentall = new System.Windows.Forms.Label();
             this.lblMonthF = new System.Windows.Forms.Label();
             this.cmbTuitionID = new System.Windows.Forms.ComboBox();
-            this.txtOhf = new System.Windows.Forms.TextBox();
             this.txtAllHours = new System.Windows.Forms.TextBox();
             this.txtPMfee = new System.Windows.Forms.TextBox();
             this.lblEntryfee = new System.Windows.Forms.Label();
@@ -179,21 +176,6 @@
             this.lblAID.TabIndex = 67;
             this.lblAID.Text = "Athlete ID";
             // 
-            // cmbAID
-            // 
-            this.cmbAID.FormattingEnabled = true;
-            this.cmbAID.Items.AddRange(new object[] {
-            "01",
-            "02",
-            "03",
-            "04",
-            "05",
-            "06"});
-            this.cmbAID.Location = new System.Drawing.Point(185, 10);
-            this.cmbAID.Name = "cmbAID";
-            this.cmbAID.Size = new System.Drawing.Size(157, 24);
-            this.cmbAID.TabIndex = 68;
-            // 
             // lblFeeNo
             // 
             this.lblFeeNo.AutoSize = true;
@@ -238,18 +220,6 @@
             this.lblTraning.Size = new System.Drawing.Size(97, 23);
             this.lblTraning.TabIndex = 71;
             this.lblTraning.Text = "Traning Fee";
-            // 
-            // lblPlanId
-            // 
-            this.lblPlanId.AutoSize = true;
-            this.lblPlanId.BackColor = System.Drawing.Color.Transparent;
-            this.lblPlanId.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlanId.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblPlanId.Location = new System.Drawing.Point(362, 135);
-            this.lblPlanId.Name = "lblPlanId";
-            this.lblPlanId.Size = new System.Drawing.Size(126, 23);
-            this.lblPlanId.TabIndex = 72;
-            this.lblPlanId.Text = "Traning Plan ID";
             // 
             // lblTraningP
             // 
@@ -310,20 +280,6 @@
             this.cmbTId.Name = "cmbTId";
             this.cmbTId.Size = new System.Drawing.Size(142, 24);
             this.cmbTId.TabIndex = 77;
-            // 
-            // txtTplan
-            // 
-            this.txtTplan.Location = new System.Drawing.Point(514, 167);
-            this.txtTplan.Name = "txtTplan";
-            this.txtTplan.Size = new System.Drawing.Size(142, 22);
-            this.txtTplan.TabIndex = 78;
-            // 
-            // txtWeekfee
-            // 
-            this.txtWeekfee.Location = new System.Drawing.Point(514, 196);
-            this.txtWeekfee.Name = "txtWeekfee";
-            this.txtWeekfee.Size = new System.Drawing.Size(142, 22);
-            this.txtWeekfee.TabIndex = 79;
             // 
             // txtAttendance
             // 
@@ -411,13 +367,6 @@
             this.cmbTuitionID.Name = "cmbTuitionID";
             this.cmbTuitionID.Size = new System.Drawing.Size(151, 24);
             this.cmbTuitionID.TabIndex = 87;
-            // 
-            // txtOhf
-            // 
-            this.txtOhf.Location = new System.Drawing.Point(911, 166);
-            this.txtOhf.Name = "txtOhf";
-            this.txtOhf.Size = new System.Drawing.Size(151, 22);
-            this.txtOhf.TabIndex = 88;
             // 
             // txtAllHours
             // 
@@ -534,7 +483,6 @@
             this.btnCal.TabIndex = 98;
             this.btnCal.Text = "Calculate";
             this.btnCal.UseVisualStyleBackColor = false;
-            this.btnCal.Click += new System.EventHandler(this.btnCal_Click);
             // 
             // btnCal2
             // 
@@ -546,7 +494,6 @@
             this.btnCal2.TabIndex = 99;
             this.btnCal2.Text = "Calculate";
             this.btnCal2.UseVisualStyleBackColor = false;
-            this.btnCal2.Click += new System.EventHandler(this.btnCal2_Click);
             // 
             // lblComat
             // 
@@ -596,7 +543,6 @@
             this.btnCal3.TabIndex = 104;
             this.btnCal3.Text = "Calculate";
             this.btnCal3.UseVisualStyleBackColor = false;
-            this.btnCal3.Click += new System.EventHandler(this.btnCal3_Click);
             // 
             // btnCount
             // 
@@ -608,7 +554,6 @@
             this.btnCount.TabIndex = 105;
             this.btnCount.Text = "Count";
             this.btnCount.UseVisualStyleBackColor = false;
-            this.btnCount.Click += new System.EventHandler(this.btnCount_Click);
             // 
             // lblTmfee
             // 
@@ -640,7 +585,6 @@
             this.btnCaltotal.TabIndex = 108;
             this.btnCaltotal.Text = "Calculate";
             this.btnCaltotal.UseVisualStyleBackColor = false;
-            this.btnCaltotal.Click += new System.EventHandler(this.btnCaltotal_Click);
             // 
             // panel1
             // 
@@ -678,7 +622,6 @@
             this.btnSave.TabIndex = 113;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnclear
             // 
@@ -691,7 +634,6 @@
             this.btnclear.TabIndex = 112;
             this.btnclear.Text = "clear";
             this.btnclear.UseVisualStyleBackColor = false;
-            this.btnclear.Click += new System.EventHandler(this.btnclear_Click);
             // 
             // pictureBox2
             // 
@@ -750,16 +692,12 @@
             this.Controls.Add(this.lblComat);
             this.Controls.Add(this.btnCal2);
             this.Controls.Add(this.btnCal);
-            this.Controls.Add(this.cmbAthId);
-            this.Controls.Add(this.txtComF);
             this.Controls.Add(this.cmbComAId);
-            this.Controls.Add(this.lblAthId);
             this.Controls.Add(this.lblComfee);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblEntryfee);
             this.Controls.Add(this.txtPMfee);
             this.Controls.Add(this.txtAllHours);
-            this.Controls.Add(this.txtOhf);
             this.Controls.Add(this.cmbTuitionID);
             this.Controls.Add(this.lblMonthF);
             this.Controls.Add(this.lblAttentall);
@@ -775,7 +713,6 @@
             this.Controls.Add(this.lblAttendance);
             this.Controls.Add(this.lblWeekF);
             this.Controls.Add(this.lblTraningP);
-            this.Controls.Add(this.lblPlanId);
             this.Controls.Add(this.lblTraning);
             this.Controls.Add(this.btnFee);
             this.Controls.Add(this.btnComp);
@@ -805,11 +742,9 @@
         private System.Windows.Forms.Button btnRview;
         private System.Windows.Forms.Button btnReg;
         private System.Windows.Forms.Label lblAID;
-        private System.Windows.Forms.ComboBox cmbAID;
         private System.Windows.Forms.Label lblFeeNo;
         private System.Windows.Forms.ComboBox cmbMonthID;
         private System.Windows.Forms.Label lblTraning;
-        private System.Windows.Forms.Label lblPlanId;
         private System.Windows.Forms.Label lblTraningP;
         private System.Windows.Forms.Label lblWeekF;
         private System.Windows.Forms.Label lblAttendance;
@@ -825,7 +760,6 @@
         private System.Windows.Forms.Label lblAttentall;
         private System.Windows.Forms.Label lblMonthF;
         private System.Windows.Forms.ComboBox cmbTuitionID;
-        private System.Windows.Forms.TextBox txtOhf;
         private System.Windows.Forms.TextBox txtAllHours;
         private System.Windows.Forms.TextBox txtPMfee;
         private System.Windows.Forms.Label lblEntryfee;

@@ -94,18 +94,8 @@ namespace KICKBLAST01
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (cmbAID.SelectedIndex == -1 || cmbMfeeNO.SelectedIndex == -1)
-            {
-                MessageBox.Show("⚠ Please select Athlete ID and Month No.");
-                return;
-            }
 
-            string athleteID = cmbAID.Text;
-            string monthNo = cmbMfeeNO.Text;
 
-            // OOP: SqlConnection wrapped in using
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
                 try
                 {
                     conn.Open();
@@ -118,8 +108,6 @@ namespace KICKBLAST01
                     {
                         txtAthletename.Text = reader["FullName"].ToString();
                     }
-                    reader.Close();
-
 
                    // 2. Load fee details
                 SqlDataAdapter da = new SqlDataAdapter(
@@ -131,7 +119,6 @@ namespace KICKBLAST01
 
                  da.SelectCommand.Parameters.AddWithValue("@ID", athleteID);
                  da.SelectCommand.Parameters.AddWithValue("@Month", monthNo);
-                 da.SelectCommand.Parameters.AddWithValue("@Name", txtAthletename.Text);
 
                  DataTable dt = new DataTable();
                  da.Fill(dt);

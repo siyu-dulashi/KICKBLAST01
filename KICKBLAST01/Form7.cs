@@ -98,11 +98,7 @@ namespace KICKBLAST01
                 }
 
                 cmbTrainingPlan.DataSource = dt;
-                cmbTrainingPlan.DisplayMember = "DisplayText";  // What user sees
-                cmbTrainingPlan.ValueMember = "PlanID";         // What is used for saving
-                cmbTrainingPlan.SelectedIndex = -1;
             }
-
         }
 
         private void LoadWeightCategories()
@@ -216,7 +212,6 @@ namespace KICKBLAST01
                 MessageBox.Show("Please select a training plan.");
                 return;
             }
-            int trainingPlanId = Convert.ToInt32(cmbTrainingPlan.SelectedValue);
 
             // Safely parse weight
             float weight;
@@ -235,8 +230,6 @@ namespace KICKBLAST01
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                try
-                {
                     conn.Open();
                     string query = @"UPDATE Athletes 
                  SET FullName = @Name, Password = @Password, DateOfBirth = @DOB, 
@@ -244,10 +237,7 @@ namespace KICKBLAST01
                      CurrentWeight = @Weight, WeightCategory = @Category 
                  WHERE AthleteID = @ID";
 
-                   
                     SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Contact", contact);
-
                     cmd.Parameters.AddWithValue("@ID", athleteID);
                     cmd.Parameters.AddWithValue("@Name", fullName);
                     cmd.Parameters.AddWithValue("@Password", password);
@@ -269,7 +259,6 @@ namespace KICKBLAST01
                     MessageBox.Show("Error while updating: " + ex.Message);
                 }
             }
-        }
 
 
         private void btnDelete_Click(object sender, EventArgs e)

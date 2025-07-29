@@ -65,10 +65,6 @@ namespace KICKBLAST01
         }
 
        
-
-       
-
-
         private void btnClear_Click(object sender, EventArgs e)
         {
             cmbApplyID.SelectedIndex = -1;
@@ -82,11 +78,6 @@ namespace KICKBLAST01
             txtPaidfee.Clear();
 
         }
-
-
-
-
-
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
