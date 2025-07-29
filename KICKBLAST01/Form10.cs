@@ -87,7 +87,7 @@ namespace KICKBLAST01
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT CoachID FROM PrivateCoaching", conn);
+                SqlCommand cmd = new SqlCommand("SELECT CoachID FROM PrivateCoaching_Backup", conn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -118,7 +118,7 @@ namespace KICKBLAST01
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT CoachName FROM PrivateCoaching WHERE CoachID = @ID", conn);
+                SqlCommand cmd = new SqlCommand("SELECT CoachName FROM PrivateCoaching_Backup WHERE CoachID = @ID", conn);
                 cmd.Parameters.AddWithValue("@ID", coachID);
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
@@ -136,7 +136,7 @@ namespace KICKBLAST01
                 conn.Open();
                 SqlDataAdapter da = new SqlDataAdapter(
                     "SELECT ApplyID AS [Coach ID], " +
-                    "(SELECT CoachName FROM PrivateCoaching WHERE CoachID = ApplyID) AS [Coach Name], " +
+                    "(SELECT CoachName FROM PrivateCoaching_Backup WHERE CoachID = ApplyID) AS [Coach Name], " +
                     "AthleteID AS [Athlete ID], Week1 AS [Hours]" +
                     " FROM PrivateCoachingSchedule", conn);
                 DataTable dt = new DataTable();
@@ -239,7 +239,7 @@ namespace KICKBLAST01
                                 if (coachExists == 0)
                                 {
                                     // Insert new coach into PrivateCoaching table
-                                    string insertCoachQuery = @"INSERT INTO dbo.PrivateCoaching (CoachID, CoachName, OneHourFee) 
+                                    string insertCoachQuery = @"INSERT INTO dbo.PrivateCoaching_Backup (CoachID, CoachName, OneHourFee) 
                                                        VALUES (@CoachID, @CoachName, @OneHourFee)";
                                     using (SqlCommand insertCoachCmd = new SqlCommand(insertCoachQuery, connection, transaction))
                                     {
@@ -252,7 +252,7 @@ namespace KICKBLAST01
                                 else
                                 {
                                     // Update coach name if it exists (in case name was changed)
-                                    string updateCoachQuery = @"UPDATE dbo.PrivateCoaching 
+                                    string updateCoachQuery = @"UPDATE dbo.PrivateCoaching_Backup 
                                                        SET CoachName = @CoachName 
                                                        WHERE CoachID = @CoachID";
                                     using (SqlCommand updateCoachCmd = new SqlCommand(updateCoachQuery, connection, transaction))
@@ -330,7 +330,7 @@ namespace KICKBLAST01
                             pc.CoachName,
                             app.AthleteID,
                             app.Week1 AS Hours
-                         FROM dbo.PrivateCoaching pc
+                         FROM dbo.PrivateCoaching_Backup pc
                          LEFT JOIN dbo.PrivateCoachingSchedule_Backup app ON pc.CoachID = app.CoachID
                          ORDER BY pc.CoachID";
 
@@ -389,7 +389,7 @@ namespace KICKBLAST01
                     connection.Open();
 
                     // Load Coach IDs (you might want to load from a Coaches table)
-                    string coachQuery = "SELECT DISTINCT CoachID FROM dbo.PrivateCoaching ORDER BY CoachID";
+                    string coachQuery = "SELECT DISTINCT CoachID FROM dbo.PrivateCoaching_Backup ORDER BY CoachID";
                     using (SqlCommand cmd = new SqlCommand(coachQuery, connection))
                     {
                         using (SqlDataReader reader = cmd.ExecuteReader())
@@ -455,44 +455,49 @@ namespace KICKBLAST01
         //Delete details
         private void btnDelete_Click(object sender, EventArgs e)
         {
-           
+
+
+          
             try
             {
-                // Check if exactly one full row is selected
-                if (dgvCoaching.SelectedRows.Count != 1)
+                // Check if at least one row is selected in any way (cell or row)
+                if (dgvCoaching.CurrentRow == null || dgvCoaching.CurrentRow.IsNewRow)
                 {
-                    MessageBox.Show("Please select a single full row to delete.");
+                    MessageBox.Show("Please select a valid row to delete.");
                     return;
                 }
 
-                // Confirm with user
-                DialogResult confirmResult = MessageBox.Show("Are you sure you want to delete the selected record?",
-                                                             "Confirm Delete",
+                // Get selected row
+                DataGridViewRow selectedRow = dgvCoaching.CurrentRow;
+
+                // Extract CoachID from first cell (adjust index if CoachID is not in cell[0])
+                object coachIdObj = selectedRow.Cells[0].Value;
+
+                if (coachIdObj == null || coachIdObj == DBNull.Value || string.IsNullOrWhiteSpace(coachIdObj.ToString()))
+                {
+                    MessageBox.Show("The selected row does not contain a valid CoachID.");
+                    return;
+                }
+
+                if (!int.TryParse(coachIdObj.ToString(), out int coachId))
+                {
+                    MessageBox.Show("Invalid CoachID. Deletion aborted.");
+                    return;
+                }
+
+                // Confirm with the user
+                DialogResult confirmResult = MessageBox.Show("Are you sure you want to delete this record?",
+                                                             "Confirm Deletion",
                                                              MessageBoxButtons.YesNo,
                                                              MessageBoxIcon.Warning);
 
                 if (confirmResult != DialogResult.Yes)
                     return;
 
-                // Get the selected DataGridViewRow
-                DataGridViewRow selectedRow = dgvCoaching.SelectedRows[0];
+                //  Debug: show the CoachID being used
+                MessageBox.Show("Deleting using CoachID: " + coachId);
 
-                // Extract CoachID (assumed in first column)
-                object coachIdObj = selectedRow.Cells[0].Value;
-
-                if (coachIdObj == null || coachIdObj == DBNull.Value)
-                {
-                    MessageBox.Show("Selected row has no valid CoachID.");
-                    return;
-                }
-
-                if (!int.TryParse(coachIdObj.ToString(), out int coachId))
-                {
-                    MessageBox.Show("CoachID is invalid or not a number.");
-                    return;
-                }
-
-                // Connection string - update as needed
+                // DB deletion
                 string connectionString = @"Data Source=LAPTOP-8NBCQ5M9\SQLEXPRESS02;Initial Catalog=KickBlastJudoDB;Integrated Security=True;";
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -506,14 +511,12 @@ namespace KICKBLAST01
 
                         if (affectedRows > 0)
                         {
-                            // Remove from DataGridView only if DB deletion succeeded
-                            dgvCoaching.Rows.Remove(selectedRow);
-
+                            dgvCoaching.Rows.Remove(selectedRow); // Remove from UI only if DB deletion succeeded
                             MessageBox.Show("Record deleted successfully.");
 
-                            // Optional: clear form controls
+                            // Optional: Clear form inputs
                             cmbCoachID.Text = "";
-                            txtCname.Text = "";
+                            txtCname.Clear();
                             cmbAID.Text = "";
                             nudHours.Value = 0;
                         }
@@ -529,6 +532,8 @@ namespace KICKBLAST01
                 MessageBox.Show("Error during deletion: " + ex.Message);
             }
         }
+
+        
 
         
 
