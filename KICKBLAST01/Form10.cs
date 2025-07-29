@@ -494,17 +494,14 @@ namespace KICKBLAST01
 
                 // Connection string - update as needed
                 string connectionString = @"Data Source=LAPTOP-8NBCQ5M9\SQLEXPRESS02;Initial Catalog=KickBlastJudoDB;Integrated Security=True;";
-
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-
                     string sqlDelete = "DELETE FROM PrivateCoachingSchedule_Backup WHERE CoachID = @CoachID";
 
                     using (SqlCommand cmd = new SqlCommand(sqlDelete, conn))
                     {
                         cmd.Parameters.AddWithValue("@CoachID", coachId);
-
                         int affectedRows = cmd.ExecuteNonQuery();
 
                         if (affectedRows > 0)
