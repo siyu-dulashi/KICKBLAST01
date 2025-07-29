@@ -69,9 +69,9 @@
             // 
             this.pictureBox1.BackgroundImage = global::KICKBLAST01.Properties.Resources.lllllllllll2;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(377, 82);
+            this.pictureBox1.Location = new System.Drawing.Point(367, 82);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(685, 429);
+            this.pictureBox1.Size = new System.Drawing.Size(708, 429);
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
@@ -81,7 +81,7 @@
             this.lblWel.BackColor = System.Drawing.Color.Transparent;
             this.lblWel.Font = new System.Drawing.Font("Microsoft YaHei UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblWel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblWel.Location = new System.Drawing.Point(395, 405);
+            this.lblWel.Location = new System.Drawing.Point(385, 416);
             this.lblWel.Name = "lblWel";
             this.lblWel.Size = new System.Drawing.Size(646, 95);
             this.lblWel.TabIndex = 12;
@@ -135,7 +135,7 @@
             this.btnReg.Name = "btnReg";
             this.btnReg.Size = new System.Drawing.Size(223, 39);
             this.btnReg.TabIndex = 39;
-            this.btnReg.Text = "Atheltes Registration View";
+            this.btnReg.Text = "Your View";
             this.btnReg.UseVisualStyleBackColor = false;
             this.btnReg.Click += new System.EventHandler(this.btnReg_Click);
             // 

@@ -79,7 +79,7 @@ namespace KICKBLAST01                       //OOP-Polymorphism method overriding
                     ON PCS1.AthleteID = LatestPCS.AthleteID 
                        AND PCS1.ApplyID = LatestPCS.MaxApplyID
                 ) AS PCS ON A.AthleteID = PCS.AthleteID
-                LEFT JOIN PrivateCoaching PC ON PCS.TuitionID = PC.CoachID
+                LEFT JOIN PrivateCoaching PC ON PCS.ApplyID = PC.CoachID
                  WHERE A.AthleteID = @AthleteID";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, con);

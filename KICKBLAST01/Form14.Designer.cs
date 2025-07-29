@@ -141,7 +141,7 @@
             this.lblAid.BackColor = System.Drawing.Color.Transparent;
             this.lblAid.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAid.ForeColor = System.Drawing.Color.AliceBlue;
-            this.lblAid.Location = new System.Drawing.Point(422, 84);
+            this.lblAid.Location = new System.Drawing.Point(403, 80);
             this.lblAid.Name = "lblAid";
             this.lblAid.Size = new System.Drawing.Size(87, 23);
             this.lblAid.TabIndex = 69;
@@ -178,7 +178,7 @@
             this.lblAname.BackColor = System.Drawing.Color.Transparent;
             this.lblAname.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAname.ForeColor = System.Drawing.Color.AliceBlue;
-            this.lblAname.Location = new System.Drawing.Point(422, 117);
+            this.lblAname.Location = new System.Drawing.Point(403, 115);
             this.lblAname.Name = "lblAname";
             this.lblAname.Size = new System.Drawing.Size(116, 23);
             this.lblAname.TabIndex = 110;
@@ -204,11 +204,11 @@
             this.lblPass.BackColor = System.Drawing.Color.Transparent;
             this.lblPass.Font = new System.Drawing.Font("Yu Gothic UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPass.ForeColor = System.Drawing.Color.AliceBlue;
-            this.lblPass.Location = new System.Drawing.Point(422, 151);
+            this.lblPass.Location = new System.Drawing.Point(403, 151);
             this.lblPass.Name = "lblPass";
-            this.lblPass.Size = new System.Drawing.Size(82, 23);
+            this.lblPass.Size = new System.Drawing.Size(133, 23);
             this.lblPass.TabIndex = 114;
-            this.lblPass.Text = "Password";
+            this.lblPass.Text = "Registration NO";
             // 
             // dgvReg
             // 
@@ -253,7 +253,6 @@
             this.Controls.Add(this.pictureBox2);
             this.Name = "Form14";
             this.Text = "Athlete Reg View(U)";
-            
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReg)).EndInit();
             this.ResumeLayout(false);

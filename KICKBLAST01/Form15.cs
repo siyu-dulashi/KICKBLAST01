@@ -112,12 +112,12 @@ namespace KICKBLAST01
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(
-                        "INSERT INTO PrivateCoachingSchedule ( AthleteID, TuitionID, Week1, Week2, Week3, Week4) " +
-                        "VALUES ( @AthleteID, @TuitionID, @W1, @W2, @W3, @W4)", conn);
+                        "INSERT INTO PrivateCoachingSchedule ( AthleteID, ApplyID, Week1, Week2, Week3, Week4) " +
+                        "VALUES ( @AthleteID, @ApplyID, @W1, @W2, @W3, @W4)", conn);
 
                     
                     cmd.Parameters.AddWithValue("@AthleteID", cmbAId.Text);
-                    cmd.Parameters.AddWithValue("@TuitionID", cmbTId.Text);
+                    cmd.Parameters.AddWithValue("@ApplyID", cmbTId.Text);
                     cmd.Parameters.AddWithValue("@W1", numW1.Value);
                     cmd.Parameters.AddWithValue("@W2", numW2.Value);
                     cmd.Parameters.AddWithValue("@W3", numW3.Value);
@@ -167,20 +167,20 @@ namespace KICKBLAST01
 
             using (SqlConnection con = new SqlConnection(connStr))
             {
-                string query = "INSERT INTO PrivateCoachingSchedule ( AthleteID, TuitionID) " +
-                               "VALUES (, @athleteID, @tuitionID)";
+                string query = "INSERT INTO PrivateCoachingSchedule ( AthleteID, ApplyID) " +
+                               "VALUES ( @athleteID, @tuitionID)";
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     
                     cmd.Parameters.AddWithValue("@athleteID", athleteID);
-                    cmd.Parameters.AddWithValue("@tuitionID", tuitionID);
+                    cmd.Parameters.AddWithValue("@ApplyID", tuitionID);
                     
 
                     con.Open();
                     int result = cmd.ExecuteNonQuery();
                     con.Close();
 
-                    MessageBox.Show(result > 0 ? "Saved successfully!" : "Save failed.");
+                    MessageBox.Show(result > 0 ? "Updated successfully!" : "Update failed.");
                 }
             }
         }

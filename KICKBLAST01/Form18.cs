@@ -20,49 +20,49 @@ namespace KICKBLAST01
         {
             InitializeComponent();
         }
-
+        // Athlete registration view
         private void btnReg_Click(object sender, EventArgs e)
         {
             Form14 form14 = new Form14();
             form14.Show();
             this.Hide();
         }
-
+        //Traning plan
         private void button3_Click(object sender, EventArgs e)
         {
             Form15 form15 = new Form15();
             form15.Show();
             this.Hide();
         }
-
+        //Compatition view
         private void btnComp_Click(object sender, EventArgs e)
         {
             Form16 form16 = new Form16();
             form16.Show();
             this.Hide();
         }
-
+        //Competition application view
         private void btnComap_Click(object sender, EventArgs e)
         {
             Form17 form17 = new Form17();
             form17.Show();
             this.Hide();
         }
-
+        //MOnthly fee view
         private void btnFee_Click(object sender, EventArgs e)
         {
             Form18 form18 = new Form18();
             form18.Show();
             this.Hide();
         }
-
+        //go to previous form
         private void gunaArrow_Click(object sender, EventArgs e)
         {
             Form13 Athlete = new Form13();
             Athlete.Show();
             this.Hide();
         }
-
+        //Load event for Form18
         private void Form18_Load(object sender, EventArgs e)
         {
             LoadAthleteIDs();
@@ -94,44 +94,66 @@ namespace KICKBLAST01
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-
-
-                try
-                {
-                    conn.Open();
-
-                    // 1. Load athlete name
-                    SqlCommand nameCmd = new SqlCommand("SELECT FullName FROM Athletes WHERE AthleteID = @ID", conn);
-                    nameCmd.Parameters.AddWithValue("@ID", athleteID);
-                    SqlDataReader reader = nameCmd.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        txtAthletename.Text = reader["FullName"].ToString();
-                    }
-
-                   // 2. Load fee details
-                SqlDataAdapter da = new SqlDataAdapter(
-                @"SELECT AthleteID, @Name AS AthleteName, MonthNo, 
-                         TrainingFee, PrivateCoachingFee, CompetitionFee, 
-                         (TrainingFee + PrivateCoachingFee + CompetitionFee) AS TotalFee
-                  FROM MonthlyFees 
-                  WHERE AthleteID = @ID AND MonthNo = @Month", conn);
-
-                 da.SelectCommand.Parameters.AddWithValue("@ID", athleteID);
-                 da.SelectCommand.Parameters.AddWithValue("@Month", monthNo);
-
-                 DataTable dt = new DataTable();
-                 da.Fill(dt);
-                 dgvMonthlyview.DataSource = dt;
+            if (string.IsNullOrWhiteSpace(cmbAID.Text) || string.IsNullOrWhiteSpace(txtAthletename.Text))
+            {
+                MessageBox.Show("⚠ Please enter Athlete ID and Full Name.");
+                return;
             }
-                 catch (Exception ex)
-        {
+
+            string athleteID = cmbAID.Text.Trim();
+            string athleteName = txtAthletename.Text.Trim();
+
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connStr))
+                {
+                    string query = @"
+                SELECT AthleteID, @Name AS AthleteName, MonthNo, 
+                       TrainingFee, PrivateCoachingFee, CompetitionFee, 
+                       (TrainingFee + PrivateCoachingFee + CompetitionFee) AS TotalFee
+                FROM MonthlyFees
+                WHERE AthleteID = @ID";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, con);
+                    adapter.SelectCommand.Parameters.AddWithValue("@ID", athleteID);
+                    adapter.SelectCommand.Parameters.AddWithValue("@Name", athleteName);
+
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        dgvMonthlyview.DataSource = dt;
+                    }
+                    else
+                    {
+                        dgvMonthlyview.DataSource = null;
+                        MessageBox.Show("⚠ No matching records found.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show("⚠ Error: " + ex.Message);
             }
         }
+
     }
-}
-        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
 

@@ -65,6 +65,7 @@
             this.lblEx = new System.Windows.Forms.Label();
             this.lblCnumber = new System.Windows.Forms.Label();
             this.txtContact = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -477,6 +478,19 @@
             this.txtContact.Size = new System.Drawing.Size(169, 22);
             this.txtContact.TabIndex = 112;
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.LightSlateGray;
+            this.button1.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button1.Location = new System.Drawing.Point(780, 107);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(86, 31);
+            this.button1.TabIndex = 113;
+            this.button1.Text = "Search";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form7
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -484,6 +498,7 @@
             this.BackgroundImage = global::KICKBLAST01.Properties.Resources.A5;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1074, 561);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.txtContact);
             this.Controls.Add(this.lblCnumber);
             this.Controls.Add(this.lblEx);
@@ -567,5 +582,6 @@
         private System.Windows.Forms.Label lblEx;
         private System.Windows.Forms.Label lblCnumber;
         private System.Windows.Forms.TextBox txtContact;
+        private System.Windows.Forms.Button button1;
     }
 }

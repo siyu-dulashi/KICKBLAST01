@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +20,9 @@ namespace KICKBLAST01
         public Form9()
         {
             InitializeComponent();
+            //attach the event handler
+    this.dgvTraningPlan.CellDoubleClick += new DataGridViewCellEventHandler(dgvTraningPlan_DoubleClick);
+
         }
         // Athlete Registration Form
         private void btnReg_Click(object sender, EventArgs e)
@@ -218,11 +222,41 @@ namespace KICKBLAST01
             txtPlanFee.Clear();
 
         }
+
+        private void dgvTraningPlan_DoubleClick(object sender, EventArgs e)
+        {
+           
+
+            // Fill form fields manually with row data
+            cmbPlanID.Text = dgvTraningPlan.CurrentRow.Cells[0].Value.ToString();
+            cmbPlanName.Text = dgvTraningPlan.CurrentRow.Cells[1].Value.ToString();
+            txtPlanFee.Text = dgvTraningPlan.CurrentRow.Cells[2].Value.ToString();
+
+            // Ask user if they want to update this record
+            DialogResult dr = MessageBox.Show(
+                "Do you want to update this record?\nIf yes, please edit the fields and then click the Update button.",
+                "Confirm Update",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                // Focus to the plan name combobox for editing
+                cmbPlanName.Focus();
+            }
+            else
+            {
+                // Optional: Clear fields or do nothing if No
+                // ClearFields();
+            }
+
+        }
+    }
     }
 
         
 
-            }
+            
         
     
 

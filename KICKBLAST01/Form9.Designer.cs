@@ -295,6 +295,7 @@
             this.dgvTraningPlan.RowTemplate.Height = 24;
             this.dgvTraningPlan.Size = new System.Drawing.Size(693, 277);
             this.dgvTraningPlan.TabIndex = 110;
+            this.dgvTraningPlan.DoubleClick += new System.EventHandler(this.dgvTraningPlan_DoubleClick);
             // 
             // Form9
             // 

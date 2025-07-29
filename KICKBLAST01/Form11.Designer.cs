@@ -358,6 +358,7 @@
             this.dgvCompetitions.RowTemplate.Height = 24;
             this.dgvCompetitions.Size = new System.Drawing.Size(710, 239);
             this.dgvCompetitions.TabIndex = 113;
+            this.dgvCompetitions.DoubleClick += new System.EventHandler(this.dgvCompetitions_DoubleClick);
             // 
             // cmbComw
             // 

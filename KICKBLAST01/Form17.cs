@@ -64,7 +64,7 @@ namespace KICKBLAST01
             this.Hide();
         }
 
-       
+
         private void btnClear_Click(object sender, EventArgs e)
         {
             cmbApplyID.SelectedIndex = -1;
@@ -84,7 +84,7 @@ namespace KICKBLAST01
             try
             {
                 con.Open();
-                string query = @"UPDATE CompetitionApplications SET 
+                string query = @"UPDATE CompetitionApplications_Backup SET 
                          CompetitionID = @CompetitionID,
                          AthleteID = @AthleteID,
                          TrainingPlanID = @TrainingPlanID,
@@ -122,7 +122,7 @@ namespace KICKBLAST01
             try
             {
                 con.Open();
-                SqlCommand cmd = new SqlCommand(@"INSERT INTO CompetitionApplications 
+                SqlCommand cmd = new SqlCommand(@"INSERT INTO CompetitionApplications_Backup 
                     (CompetitionID, AthleteID, TrainingPlanID, CurrentWeightCategory, AllowPlan)
                     VALUES (@CompetitionID, @AthleteID, @TrainingPlanID, @WeightCategory, @AllowPlan)", con);
 

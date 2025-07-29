@@ -243,6 +243,8 @@
             this.dgvCoaching.RowTemplate.Height = 24;
             this.dgvCoaching.Size = new System.Drawing.Size(680, 354);
             this.dgvCoaching.TabIndex = 110;
+           
+            this.dgvCoaching.DoubleClick += new System.EventHandler(this.dgvCoaching_DoubleClick);
             // 
             // btnAdd
             // 

@@ -83,6 +83,8 @@ namespace KICKBLAST01
 
         private void LoadTrainingPlans()
         {
+
+        
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
@@ -90,16 +92,25 @@ namespace KICKBLAST01
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                // Create a new column to combine PlanName and Fee
+                // Combine PlanName + Fee for display
                 dt.Columns.Add("DisplayText", typeof(string));
                 foreach (DataRow row in dt.Rows)
                 {
-                    row["DisplayText"] = $"{row["PlanName"]} ({row["Fee"]})";
+                    row["DisplayText"] = $"{row["PlanName"]} ({Convert.ToDecimal(row["Fee"]).ToString("F2")})";
                 }
 
                 cmbTrainingPlan.DataSource = dt;
+                cmbTrainingPlan.DisplayMember = "DisplayText";
+                cmbTrainingPlan.ValueMember = "PlanID";
+                cmbTrainingPlan.SelectedIndex = -1;
             }
         }
+
+    
+
+
+        
+
 
         private void LoadWeightCategories()
         {
@@ -195,8 +206,16 @@ namespace KICKBLAST01
                 }
             }
         }
+       
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+
+            if (string.IsNullOrWhiteSpace(txtAid.Text) || string.IsNullOrWhiteSpace(txtAname.Text))
+            {
+                MessageBox.Show("⚠ Please enter both Athlete ID and Full Name.");
+                return;
+            }
+
             string athleteID = txtAid.Text.Trim();
             string fullName = txtAname.Text.Trim();
             string password = txtPassword.Text;
@@ -206,36 +225,39 @@ namespace KICKBLAST01
                             rbOther.Checked ? "Other" : "";
             string address = txtAddress.Text.Trim();
             string contact = txtContact.Text.Trim();
-            // Safely get training plan
+
+            // ✅ Training Plan (Get PlanID from combo box)
             if (cmbTrainingPlan.SelectedValue == null)
             {
-                MessageBox.Show("Please select a training plan.");
+                MessageBox.Show("❗ Please select a valid training plan.");
+                return;
+            }
+            int trainingPlanId = Convert.ToInt32(cmbTrainingPlan.SelectedValue);
+
+            // ✅ Weight
+            if (!float.TryParse(txtcurrentW.Text.Trim(), out float weight))
+            {
+                MessageBox.Show("❗ Please enter a valid weight.");
                 return;
             }
 
-            // Safely parse weight
-            float weight;
-            if (!float.TryParse(txtcurrentW.Text.Trim(), out weight))
-            {
-                MessageBox.Show("Please enter a valid weight.");
-                return;
-            }
-            // Safely get weight category
             string category = cmbWeightCategory.Text;
             if (string.IsNullOrEmpty(category))
             {
-                MessageBox.Show("Please select a weight category.");
+                MessageBox.Show("❗ Please select a weight category.");
                 return;
             }
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
+                try
+                {
                     conn.Open();
                     string query = @"UPDATE Athletes 
-                 SET FullName = @Name, Password = @Password, DateOfBirth = @DOB, 
-                     Gender = @Gender, Contact = @Contact, Address = @Address, TrainingPlanID = @PlanID, 
-                     CurrentWeight = @Weight, WeightCategory = @Category 
-                 WHERE AthleteID = @ID";
+                             SET FullName = @Name, Password = @Password, DateOfBirth = @DOB, 
+                                 Gender = @Gender, Contact = @Contact, Address = @Address, 
+                                 TrainingPlanID = @PlanID, CurrentWeight = @Weight, WeightCategory = @Category 
+                             WHERE AthleteID = @ID";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@ID", athleteID);
@@ -243,22 +265,31 @@ namespace KICKBLAST01
                     cmd.Parameters.AddWithValue("@Password", password);
                     cmd.Parameters.AddWithValue("@DOB", dob);
                     cmd.Parameters.AddWithValue("@Gender", gender);
+                    cmd.Parameters.AddWithValue("@Contact", contact);
                     cmd.Parameters.AddWithValue("@Address", address);
-                    cmd.Parameters.AddWithValue("@PlanID", trainingPlanId);
+                    cmd.Parameters.AddWithValue("@PlanID", trainingPlanId);  // ✅ Plan ID, not name
                     cmd.Parameters.AddWithValue("@Weight", weight);
                     cmd.Parameters.AddWithValue("@Category", category);
 
                     int rows = cmd.ExecuteNonQuery();
                     if (rows > 0)
-                        MessageBox.Show("Athlete updated successfully.");
+                        MessageBox.Show("✅ Athlete updated successfully.");
                     else
-                        MessageBox.Show("Athlete not found.");
+                        MessageBox.Show("⚠ Athlete not found.");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error while updating: " + ex.Message);
+                    MessageBox.Show("❌ Error while updating: " + ex.Message);
                 }
             }
+        }
+
+    
+
+
+        
+
+        
 
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -303,20 +334,105 @@ namespace KICKBLAST01
             rbOther.Checked = false;
             txtContact.Clear(); // Clear contact
             txtAddress.Clear();
-            cmbTrainingPlan.SelectedIndex = -1;
+            cmbTrainingPlan.Text = "";
+
             txtcurrentW.Clear();
             cmbWeightCategory.SelectedIndex = -1;
         }
 
-        private void gunaArrow_Click(object sender, EventArgs e)
-        {
-            Form4 back = new Form4(); // Or whichever form you go back to
-            back.Show();
-            this.Hide();
+       
 
+        //Search button
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+
+       
+            if (string.IsNullOrWhiteSpace(txtAid.Text) || string.IsNullOrWhiteSpace(txtAname.Text))
+            {
+                MessageBox.Show("⚠ Please enter both Athlete ID and Full Name.");
+                return;
+            }
+
+            string athleteID = txtAid.Text.Trim();
+            string fullName = txtAname.Text.Trim();
+
+            using (SqlConnection con = new SqlConnection(connStr))
+            {
+                try
+                {
+                    con.Open();
+
+                    // Show what is being searched
+                    MessageBox.Show($"Searching for:\nAthlete ID: {athleteID}\nFull Name: {fullName}");
+
+                    // Query selects all columns including TrainingPlanID
+                    string query = @"SELECT * FROM Athletes 
+                             WHERE AthleteID = @AthleteID AND FullName COLLATE Latin1_General_CI_AI = @FullName";
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@AthleteID", athleteID);
+                    cmd.Parameters.AddWithValue("@FullName", fullName);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    // Map TrainingPlanID to TrainingPlanName
+                    Dictionary<int, string> trainingPlanMap = new Dictionary<int, string>()
+            {
+                { 1, "Beginner" },
+                { 2, "Intermediate" },
+                { 3, "Advanced" }
+            };
+
+                    if (reader.Read())
+                    {
+                        MessageBox.Show("✔ Record found. Now filling the form...");
+
+                        txtAddress.Text = reader["Address"].ToString();
+                        txtPassword.Text = reader["Password"].ToString();
+
+                        // Parse DOB safely
+                        if (DateTime.TryParse(reader["DateOfBirth"].ToString(), out DateTime dob))
+                            dtpBirth.Value = dob;
+
+                        txtContact.Text = reader["Contact"].ToString();
+                        txtcurrentW.Text = reader["CurrentWeight"].ToString();
+                        cmbWeightCategory.Text = reader["WeightCategory"].ToString();
+
+                        // Gender radio buttons
+                        string gender = reader["Gender"].ToString();
+                        rbMale.Checked = (gender == "Male");
+                        rbFemale.Checked = (gender == "Female");
+                        rbOther.Checked = (gender == "Other");
+
+                        // Get TrainingPlanID and map to Name
+                        int trainingPlanID = Convert.ToInt32(reader["TrainingPlanID"]);
+                        if (trainingPlanMap.ContainsKey(trainingPlanID))
+                            cmbTrainingPlan.Text = trainingPlanMap[trainingPlanID];
+                        else
+                            cmbTrainingPlan.Text = ""; // or handle unknown plan
+
+                        MessageBox.Show("✔ Athlete details loaded successfully.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("❌ No matching athlete found.\nPlease check the exact ID and Name in the Athletes table.");
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("⚠ Error: " + ex.Message);
+                }
+            }
         }
+
+
     }
 }
+
+
         
 
     

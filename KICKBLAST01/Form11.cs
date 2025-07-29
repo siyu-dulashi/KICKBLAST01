@@ -238,8 +238,38 @@ namespace KICKBLAST01
             dtpCom.Value = DateTime.Today;
             txtTime.Clear();
         }
+
+        private void dgvCompetitions_DoubleClick(object sender, EventArgs e)
+        {
+            // Fill form fields manually with row data
+            cmbComId.Text = dgvCompetitions.CurrentRow.Cells[0].Value.ToString();
+            txtComname.Text = dgvCompetitions.CurrentRow.Cells[1].Value.ToString();
+            txtComfee.Text = dgvCompetitions.CurrentRow.Cells[2].Value.ToString();
+            cmbComw.Text = dgvCompetitions.CurrentRow.Cells[3].Value.ToString();
+            dtpCom.Text = dgvCompetitions.CurrentRow.Cells[4].Value.ToString();
+            txtTime.Text = dgvCompetitions.CurrentRow.Cells[4].Value.ToString();
+
+            // Ask user if they want to update this record
+            DialogResult dr = MessageBox.Show(
+                "Do you want to update this record?\nIf yes, please edit the fields and then click the Update button.",
+                "Confirm Update",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                // Focus to the plan name combobox for editing
+                cmbComId.Focus();
+            }
+            else
+            {
+                // Optional: Clear fields or do nothing if No
+                // ClearFields();
+            }
+        }
     }
-}
+    }
+
             
 
 
